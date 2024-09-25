@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+      }
+
+      img {
+        max-width: 20px;
+        height: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      thead,
+      tr td:first-child {
+        background: #eee;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        font-weight: normal;
+        font-size: 12px;
+        text-align: center;
+        width: 64px;
+        height: 20px;
+        vertical-align: middle;
+        position: relative;
+      }
+
+      span,
+      input {
+        position: absolute;
+        inset: 0;
+        vertical-align: middle;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      input {
+        border: 0;
+        opacity: 0;
+        pointer-events: none;
+        width: 100%;
+        border-radius: 2px;
+
+        &:focus {
+          opacity: 1;
+          outline: 1px solid #09f;
+        }
+      }
+    </style>
+    <script type="module">
+      const $ = (el) => document.querySelector(el);
+      const $$ = (el) => document.querySelectorAll(el);
+
+      const ROWS = 10;
+      const COLUMNS = 5;
+      const FIRST_CHAR_CODE = 65;
+
+      const $table = $("table");
+      const $head = $("thead");
+      const $body = $("tbody");
+
+      const range = (length) => Array.from({ length }, (_, i) => i);
+      let getColumn = (i) => String.fromCharCode(FIRST_CHAR_CODE + i);
+
+      let selectedColumn = null
+
+      let STATE = range(COLUMNS).map((i) =>
+        range(ROWS).map((j) => ({ computedValue: 0, value: 0 }))
+      );
+
+      function updateCell({ x, y, value }) {
+        const newState = structuredClone(STATE);
+        const constants = generateCellsConstants(newState)
+        console.log(constants)
+
+        const cell = newState[x][y];
+
+        cell.computedValue = computeValue(value, constants);
+        cell.value = value;
+
+        newState[x][y] = cell;
+
+        computeAllCells(newState, generateCellsConstants(newState))
+
+        STATE = newState;
+
+        renderSpreadSheet();
+      }
+
+      function generateCellsConstants (cells) {
+        return cells.map((rows, x) => {
+          return rows.map((cell, y) => {
+            const letter = getColumn(x)
+            const cellId = `${letter}${y + 1}`
+            return `const ${cellId} = ${cell.computedValue}`;
+          }).join('\n')
+        }).join('\n')
+      }
+
+      function computeAllCells(cells, constants) {
+        cells.forEach((rows, x) => {
+          rows.forEach((cell, y) => {
+            const computedValue = computeValue(cell.value, constants)
+            cell.computedValue = computedValue
+          })
+        })
+      }
+
+      function computeValue(value, constants) {
+        if (typeof value === 'number') return value
+        if (!value.startsWith("=")) return value;
+
+        const formula = value.slice(1);
+
+        let computedValue;
+
+        try {
+          computedValue = eval(`(() => {
+          ${constants}
+          return ${formula};
+          })()`);
+        } catch (e) {
+          computedValue = `!ERROR: ${e.message}`;
+        }
+
+        return computedValue
+      }
+
+      const renderSpreadSheet = () => {
+        const headerHTML = `<tr>
+            <th>///</th>
+            ${range(COLUMNS)
+              .map((i) => `<th>${getColumn(i)}</th>`)
+              .join("")}
+                </tr>`;
+
+        $head.innerHTML = headerHTML;
+
+        const bodyHTML = range(ROWS)
+          .map(
+            (row) => `<tr>
+            <td>${row + 1}</td>
+            ${range(COLUMNS)
+              .map(
+                (column) => `
+            <td data-x="${column}" data-y="${row}">
+                <span>${STATE[column][row].computedValue}</span>
+                <input type="text" value="${STATE[column][row].value}" />
+                </td>
+            `
+              )
+              .join("")}
+            </tr>`
+          )
+          .join("");
+
+        $body.innerHTML = bodyHTML;
+      };
+
+      $body.addEventListener("click", (e) => {
+        const td = e.target.closest("td");
+        if (!td) return;
+
+        const { x, y } = td.dataset;
+        const input = td.querySelector("input");
+        const span = td.querySelector("span");
+
+        const end = input.value.length;
+        input.setSelectionRange(end, end);
+
+        input.focus();
+
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") input.blur();
+        });
+
+        input.addEventListener(
+          "blur",
+          () => {
+            if (input.value === STATE[x][y].value) return;
+
+            updateCell({ x, y, value: input.value });
+          },
+          { once: true }
+        );
+      });
+
+      $head.addEventListener('click', event => {
+        const th = event.target.closest('th')
+        if (!th) return
+
+        const x = [...th.parentNode.children].indexOf(th)
+        if (x < 0) return
+
+        selectedColumn = x - 1
+      })
+
+      renderSpreadSheet();
+    </script>
+  </head>
+  <body>
+    <img
+      src="data:image/png;base64,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"
+      alt=""
+    />
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </body>
+</html>

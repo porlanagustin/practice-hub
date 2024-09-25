@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1138</width>
+    <height>729</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Banco RC - Transferencias</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1138</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuCuentas">
+    <property name="title">
+     <string>Cuentas</string>
+    </property>
+    <widget class="QMenu" name="menuTransferencias">
+     <property name="title">
+      <string>Transferencias</string>
+     </property>
+     <addaction name="actionRealizar_Transferencia"/>
+     <addaction name="actionReportar_Transferencias"/>
+     <addaction name="actionHistorial_Transferencias"/>
+    </widget>
+    <widget class="QMenu" name="menuVer_Cuentas">
+     <property name="title">
+      <string>Ver Cuentas</string>
+     </property>
+     <addaction name="actionCaja_de_ahorro"/>
+     <addaction name="actionCaja_de_ahorro_en_dolares"/>
+     <addaction name="actionCuenta_corriente"/>
+    </widget>
+    <addaction name="menuVer_Cuentas"/>
+    <addaction name="menuTransferencias"/>
+    <addaction name="depositoInternacional"/>
+   </widget>
+   <widget class="QMenu" name="menuCreditos">
+    <property name="title">
+     <string>Creditos</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuTarjetas">
+    <property name="title">
+     <string>Tarjetas</string>
+    </property>
+   </widget>
+   <addaction name="menuCuentas"/>
+   <addaction name="menuCreditos"/>
+   <addaction name="menuTarjetas"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionRealizar_Transferencia">
+   <property name="text">
+    <string>Realizar Transferencia</string>
+   </property>
+  </action>
+  <action name="actionReportar_Transferencias">
+   <property name="text">
+    <string>Reportar Transferencia</string>
+   </property>
+  </action>
+  <action name="actionHistorial_Transferencias">
+   <property name="text">
+    <string>Historial Transferencias</string>
+   </property>
+  </action>
+  <action name="actionCaja_de_ahorro">
+   <property name="text">
+    <string>Caja de ahorro</string>
+   </property>
+  </action>
+  <action name="actionCaja_de_ahorro_en_dolares">
+   <property name="text">
+    <string>Caja de ahorro en dolares</string>
+   </property>
+  </action>
+  <action name="actionCuenta_corriente">
+   <property name="text">
+    <string>Cuenta corriente</string>
+   </property>
+  </action>
+  <action name="depositoInternacional">
+   <property name="text">
+    <string>Realizar deposito internacional</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,24 @@
+.panel-pedidos {
+  display: flex;
+  justify-content: center;
+  background-color: #1f2e2e;
+  height: 100vh;
+}
+
+.card-title {
+  background-color: #007bff;
+  color: #fff;
+  padding: 16px;
+  text-align: center;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  margin-top: 50px;
+}
+
+.card-body {
+  padding: 16px;
+}
+  
+  

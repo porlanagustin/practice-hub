@@ -1,0 +1,27 @@
+.footer-container {
+    width: 100%;
+    height: 60px;
+    background-color: #a37847; 
+    left: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 10px;
+    
+  }
+  
+  .recommendation-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px; 
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 25px; 
+    margin-right: 10px; 
+  }
+  
+  

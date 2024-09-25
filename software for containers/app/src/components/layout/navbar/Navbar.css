@@ -1,0 +1,12 @@
+.navbar {
+  background-color: #a37847; 
+  color: #fff; 
+  padding: 15px 0; 
+  text-align: center;
+  width: 100%; 
+}
+
+.navbar-title {
+  margin: 0; 
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
